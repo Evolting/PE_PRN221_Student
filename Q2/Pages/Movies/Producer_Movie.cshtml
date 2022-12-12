@@ -1,0 +1,77 @@
+﻿@page
+@model Q2.Pages.Movies.Producer_MovieModel
+@using Q2.Entity
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var movies = (List<Movie>)ViewData["movies"];
+    var producers = (List<Producer>)ViewData["producers"];
+
+    var producerId = (int)ViewData["producerId"];
+}
+
+
+<div style="display: inline-flex">
+    <div style="width: 30%">
+        <h4>Producers</h4>
+        <ul>
+            @foreach(var p in producers)
+            {
+                <li><a asp-area="" asp-page="/Movies/Producer_Movie" asp-route-producerId="@p.Id">@p.Name</a></li>
+            }
+        </ul>
+    </div>
+    <div style="width: 60%">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>ReleaseDate</th>
+                    <th>Description</th>
+                    <th>Language</th>
+                    <th>Director</th>
+                    <th>Producer</th>
+                    <th>Genres</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var m in movies)
+                {
+                    <tr>
+                        <td>
+                            @m.Title
+                        </td>
+                        <td>
+                            @m.ReleaseDate
+                        </td>
+                        <td>
+                            @m.Description
+                        </td>
+                        <td>
+                            @m.Language
+                        </td>
+                        <td>
+                            @m.Director.FullName
+                        </td>
+                        <td>
+                            @m.Producer.Name
+                        </td>
+                        <td>
+                            @foreach(var g in m.Genres){
+                                @g.Title<br />
+                            }
+                        </td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete">
+                                <input type="text" value="@m.Id" name="movieId" hidden/>
+                                <input type="text" value="@producerId" name="producerId" hidden />
+                                <input type="submit" value="Delete"/>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    
+</div>
